@@ -18,7 +18,7 @@ export class AppController {
   @Get()
   @Render('index')
   root() {
-    return { message: 'Hello World!' };
+    return { message: 'select your trello exported json' };
   }
 
   @Post('upload')
