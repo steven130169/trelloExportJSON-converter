@@ -17,7 +17,7 @@ describe('AppController', () => {
   describe('root', () => {
     it('should return "Hello World!"', () => {
       expect(appController.root()).toEqual({
-        message: 'Hello World!',
+        message: 'select your trello exported json',
       });
     });
   });

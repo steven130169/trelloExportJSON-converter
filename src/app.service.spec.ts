@@ -1,4 +1,4 @@
-import { AppService } from './app.service';
+import { AppService, Sheet } from './app.service';
 import * as mockTrello from './__mocks__/exported.json';
 
 describe('app.service', function () {
@@ -26,6 +26,38 @@ describe('app.service', function () {
   });
   it('should be convert to excel page', function () {
     const trelloCards = appService.getTrelloJSONCards(mockTrello);
-    const convertToExcel = appService.convertToExcel(trelloCards);
+    const trelloActions = appService.getTrelloJSONActions(mockTrello);
+    const convertToExcel = appService.convertToExcel(
+      trelloCards,
+      trelloActions,
+    );
+    expect(convertToExcel).toBeInstanceOf(Buffer);
+  });
+
+  it('should be convert to excel page sheet', function () {
+    const sheet: Sheet[] = [
+      {
+        CardName: '',
+        FrontOrBack: '',
+        BugOrIssue: '',
+        LowOrMediumOrHigh: '',
+        Department: '',
+        Urgent: true,
+        StartDate: '',
+        DueDate: '',
+      },
+    ];
+    const trelloCards = appService.getTrelloJSONCards(mockTrello);
+    console.info(`trelloCards`, trelloCards);
+    expect(appService.convertCardsToSheet(trelloCards)[0]).toMatchObject({
+      CardName: 'card name',
+      FrontOrBack: '前端',
+      BugOrIssue: 'bug',
+      LowOrMediumOrHigh: 'Low',
+      Department: '研三',
+      Urgent: true,
+      StartDate: '2021-04-24T00:00:00.000Z',
+      DueDate: '2021-04-24T00:00:00.000Z',
+    });
   });
 });
