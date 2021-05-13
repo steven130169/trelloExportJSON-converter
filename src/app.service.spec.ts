@@ -1,4 +1,4 @@
-import { AppService, Sheet } from './app.service';
+import { AppService } from './app.service';
 import * as mockTrello from './__mocks__/exported.json';
 
 describe('app.service', function () {
@@ -37,6 +37,8 @@ describe('app.service', function () {
   it('should be convert to excel page sheet', function () {
     const trelloCards = appService.getTrelloJSONCards(mockTrello);
     const expected = {
+      CardId: '607fbf085938946d0ee4e611',
+      IdList: '60823bb62cbaaf8c17a0c840',
       CardName: 'W096-01 主監控地圖>告警列表的即時影像無效',
       FrontOrBack: '前端',
       BugOrIssue: 'bug',
@@ -45,9 +47,11 @@ describe('app.service', function () {
       Urgent: true,
       StartDate: '2021-04-21T00:00:00.000Z',
       DueDate: '2021-04-27T00:24:00.000Z',
+      ListName: '緊急項目驗收完成',
     };
-    expect(appService.convertCardsToSheet(trelloCards)[125]).toMatchObject(
-      expected,
-    );
+    const trelloLists = appService.getTrelloJSONLists(mockTrello);
+    expect(
+      appService.convertCardsToSheet(trelloCards, trelloLists)[125],
+    ).toMatchObject(expected);
   });
 });

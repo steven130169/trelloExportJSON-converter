@@ -102,6 +102,8 @@ export type Card = {
   desc: string;
 };
 export type Sheet = {
+  CardId: string;
+  IdList: string;
   StartDate: string;
   FrontOrBack: string;
   CardName: string;
@@ -110,7 +112,33 @@ export type Sheet = {
   LowOrMediumOrHigh: string;
   BugOrIssue: string;
   DueDate: string;
+  ListName: string;
 };
+
+interface List {
+  id: string;
+  name: string;
+  closed: boolean;
+  pos: number;
+  softLimit: null;
+  creationMethod: null;
+  idBoard: string;
+  limits: {
+    cards: {
+      openPerList: {
+        status: string;
+        disableAt: number;
+        warnAt: number;
+      };
+      totalPerList: {
+        status: string;
+        disableAt: number;
+        warnAt: number;
+      };
+    };
+  };
+  subscribed: boolean;
+}
 
 @Injectable()
 export class AppService {
@@ -126,6 +154,10 @@ export class AppService {
     return trelloJSON.actions;
   }
 
+  getTrelloJSONLists(trelloJSON: any) {
+    return trelloJSON.lists;
+  }
+
   convertToExcel(trelloCards: any, trelloActions: any) {
     const workBook = XLSX.utils.book_new();
     console.log(`trello file is converting to sheet`);
@@ -139,6 +171,7 @@ export class AppService {
       type: 'buffer',
     });
   }
+
   s2ab(wbBook) {
     const buf = new ArrayBuffer(wbBook.length); //convert wbBook to arrayBuffer
     const view = new Uint8Array(buf); //create uint8array as viewer
@@ -147,10 +180,12 @@ export class AppService {
     return buf;
   }
 
-  convertCardsToSheet(trelloCards: Card[]): Sheet[] {
+  convertCardsToSheet(trelloCards: Card[], trelloLists: List[]): Sheet[] {
     const SheetArray: Sheet[] = [];
     for (const trelloCard of trelloCards) {
       const row: Sheet = {
+        IdList: '',
+        CardId: '',
         CardName: '',
         FrontOrBack: '',
         LowOrMediumOrHigh: '',
@@ -159,10 +194,18 @@ export class AppService {
         Urgent: false,
         StartDate: '',
         DueDate: '',
+        ListName: '',
       };
+      row.CardId = trelloCard.id;
+      row.IdList = trelloCard.idList;
       row.CardName = trelloCard.name;
       row.DueDate = trelloCard.badges.due;
       row.StartDate = trelloCard.badges.start;
+      for (const trelloList of trelloLists) {
+        if (trelloCard.idList === trelloList.id) {
+          row.ListName = trelloList.name;
+        }
+      }
       for (const label of trelloCard.labels) {
         if (label.id === '607fb9c802c92385ca7a4973') {
           row.Urgent = true;

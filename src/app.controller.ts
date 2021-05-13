@@ -34,8 +34,10 @@ export class AppController {
     const trelloJSON = JSON.parse(file.buffer.toString());
     const trelloJSONCards = this.appService.getTrelloJSONCards(trelloJSON);
     const trelloJSONActions = this.appService.getTrelloJSONActions(trelloJSON);
+    const trelloJSONLists = this.appService.getTrelloJSONLists(trelloJSON);
     const trelloCardsSheet = this.appService.convertCardsToSheet(
       trelloJSONCards,
+      trelloJSONLists,
     );
     const convertToExcel = this.appService.convertToExcel(
       trelloCardsSheet,
