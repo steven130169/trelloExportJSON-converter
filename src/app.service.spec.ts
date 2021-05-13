@@ -35,29 +35,19 @@ describe('app.service', function () {
   });
 
   it('should be convert to excel page sheet', function () {
-    const sheet: Sheet[] = [
-      {
-        CardName: '',
-        FrontOrBack: '',
-        BugOrIssue: '',
-        LowOrMediumOrHigh: '',
-        Department: '',
-        Urgent: true,
-        StartDate: '',
-        DueDate: '',
-      },
-    ];
     const trelloCards = appService.getTrelloJSONCards(mockTrello);
-    console.info(`trelloCards`, trelloCards);
-    expect(appService.convertCardsToSheet(trelloCards)[0]).toMatchObject({
-      CardName: 'card name',
+    const expected = {
+      CardName: 'W096-01 主監控地圖>告警列表的即時影像無效',
       FrontOrBack: '前端',
       BugOrIssue: 'bug',
-      LowOrMediumOrHigh: 'Low',
+      LowOrMediumOrHigh: 'High',
       Department: '研三',
       Urgent: true,
-      StartDate: '2021-04-24T00:00:00.000Z',
-      DueDate: '2021-04-24T00:00:00.000Z',
-    });
+      StartDate: '2021-04-21T00:00:00.000Z',
+      DueDate: '2021-04-27T00:24:00.000Z',
+    };
+    expect(appService.convertCardsToSheet(trelloCards)[125]).toMatchObject(
+      expected,
+    );
   });
 });

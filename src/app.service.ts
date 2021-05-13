@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import * as XLSX from "xlsx";
+import { Injectable } from '@nestjs/common';
+import * as XLSX from 'xlsx';
 
 export type Card = {
   descData: { emoji: any };
@@ -147,10 +147,58 @@ export class AppService {
     return buf;
   }
 
-  convertCardsToSheet(trelloCards: Card[]) {
+  convertCardsToSheet(trelloCards: Card[]): Sheet[] {
+    const SheetArray: Sheet[] = [];
     for (const trelloCard of trelloCards) {
-      let row: Sheet;
+      const row: Sheet = {
+        CardName: '',
+        FrontOrBack: '',
+        LowOrMediumOrHigh: '',
+        BugOrIssue: '',
+        Department: '',
+        Urgent: false,
+        StartDate: '',
+        DueDate: '',
+      };
       row.CardName = trelloCard.name;
+      row.DueDate = trelloCard.badges.due;
+      row.StartDate = trelloCard.badges.start;
+      for (const label of trelloCard.labels) {
+        if (label.id === '607fb9c802c92385ca7a4973') {
+          row.Urgent = true;
+        }
+        if (
+          label.id === '60586998158be7197805acef' ||
+          label.id === '6058698d50fd7c842f8ff51d'
+        ) {
+          row.BugOrIssue = label.name;
+        }
+        if (
+          label.id === '6058695d16c5518d01eac2c0' ||
+          label.id === '605869542c110c1c57596200'
+        ) {
+          row.FrontOrBack = label.name;
+        }
+        if (
+          label.id === '5ff6f4806542d4941900ccc9' ||
+          label.id === '603261221e2b7c12ba525535' ||
+          label.id === '5ff6f4806542d4941900cccb' ||
+          label.id === '6034bdb7799fa01375ec695e' ||
+          label.id === '6082403be433702922bf4a9d'
+        ) {
+          row.Department = label.name;
+        }
+        if (
+          label.id === '5ff6f4806542d4941900ccca' ||
+          label.id === '5ff6f4806542d4941900ccc4' ||
+          label.id === '5ff6f4806542d4941900ccc5'
+        ) {
+          row.LowOrMediumOrHigh = label.name;
+        }
+      }
+      console.debug(`row is ${JSON.stringify(row)}`);
+      SheetArray.push(row);
     }
+    return SheetArray;
   }
 }
