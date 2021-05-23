@@ -26,25 +26,21 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## 使用第一步驟 Installation
 
 ```bash
+$ cd your/path
 $ npm install
 ```
 
-## Running the app
+## 使用第二步驟 Running the app
 
 ```bash
 # development
 $ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
-Open your browser run
+
+## 使用第三步驟 Open your browser run
 ```http request
 http://localhost:3000
 ```
