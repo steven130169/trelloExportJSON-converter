@@ -105,6 +105,8 @@ export type Sheet = {
   CardId: string;
   IdList: string;
   StartDate: string;
+  StartDateWeek: number | string;
+  DueDateWeek: number | string;
   FrontOrBack: string;
   CardName: string;
   Department: string;
@@ -193,14 +195,22 @@ export class AppService {
         Department: '',
         Urgent: false,
         StartDate: '',
+        StartDateWeek: '',
         DueDate: '',
+        DueDateWeek: '',
         ListName: '',
       };
       row.CardId = trelloCard.id;
       row.IdList = trelloCard.idList;
       row.CardName = trelloCard.name;
-      row.DueDate = trelloCard.badges.due;
-      row.StartDate = trelloCard.badges.start;
+      row.DueDate = this.getConvertDateToYYYYMMDDByISODate(
+        trelloCard.badges.due,
+      );
+      row.StartDate = this.getConvertDateToYYYYMMDDByISODate(
+        trelloCard.badges.start,
+      );
+      row.StartDateWeek = this.getWeek(trelloCard.badges.start)[1];
+      row.DueDateWeek = this.getWeek(trelloCard.badges.due)[1];
       for (const trelloList of trelloLists) {
         if (trelloCard.idList === trelloList.id) {
           row.ListName = trelloList.name;
@@ -244,5 +254,36 @@ export class AppService {
       SheetArray.push(row);
     }
     return SheetArray;
+  }
+
+  private getConvertDateToYYYYMMDDByISODate(dateString: string) {
+    return this.convertDateToYYYYMMDDByISODate(
+      new Date(dateString).toISOString(),
+    );
+  }
+
+  convertDateToYYYYMMDDByISODate(mockISODate: string) {
+    const date = new Date(mockISODate);
+    const fullYear = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const date1 = date.getDate();
+    return `${fullYear}-${month}-${date1}`;
+  }
+
+  getWeek(mockISODate: string) {
+    let d = new Date(mockISODate);
+    // Copy date so don't modify original
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    // Set to nearest Thursday: current date + 4 - current day number
+    // Make Sunday's day number 7
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    // Get first day of year
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    // Calculate full weeks to nearest Thursday
+    const weekNo = Math.ceil(
+      ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7,
+    );
+    // Return array of year and week number
+    return [d.getUTCFullYear(), weekNo];
   }
 }

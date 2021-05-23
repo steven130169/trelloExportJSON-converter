@@ -45,13 +45,28 @@ describe('app.service', function () {
       LowOrMediumOrHigh: 'High',
       Department: '研三',
       Urgent: true,
-      StartDate: '2021-04-21T00:00:00.000Z',
-      DueDate: '2021-04-27T00:24:00.000Z',
+      StartDate: '2021-4-21',
+      StartDateWeek: 16,
+      DueDate: '2021-4-27',
+      DueDateWeek: 17,
       ListName: '緊急項目驗收完成',
     };
     const trelloLists = appService.getTrelloJSONLists(mockTrello);
     expect(
       appService.convertCardsToSheet(trelloCards, trelloLists)[125],
     ).toMatchObject(expected);
+  });
+
+  it('should be convert to YYYY-MM-DD', function () {
+    const mockISODate = '1970-01-01T00:00:00.000Z';
+    const expected = '1970-1-1';
+    const actual = appService.convertDateToYYYYMMDDByISODate(mockISODate);
+    expect(actual).toEqual(expected);
+  });
+  it('should be get week', function () {
+    const mockISODate = '1970-1-1';
+    const expected = 1;
+    const actual = appService.getWeek(mockISODate);
+    expect(actual[1]).toEqual(expected);
   });
 });
