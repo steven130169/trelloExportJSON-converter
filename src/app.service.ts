@@ -218,7 +218,8 @@ export class AppService {
         }
         if (
           label.id === '6058695d16c5518d01eac2c0' ||
-          label.id === '605869542c110c1c57596200'
+          label.id === '605869542c110c1c57596200' ||
+          label.id === '6082401e59d175532ab79416'
         ) {
           row.FrontOrBack = label.name;
         }

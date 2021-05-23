@@ -20,6 +20,9 @@ export class AppController {
   root() {
     return { message: 'select your trello exported json' };
   }
+  //todo V 1. 前後端那一欄位，要新增「環境」的tag
+  // 2. 開始與結束日期，只需要顯示YYYY-MM-DD
+  // 3. 欄位改中文：前/後/環境端、等級、Bug/Issue、單位、緊急(Y/N)、開始日、結束日
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
