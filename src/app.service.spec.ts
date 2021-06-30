@@ -42,7 +42,7 @@ describe('app.service', function () {
       CardName: 'W096-01 主監控地圖>告警列表的即時影像無效',
       FrontOrBack: '前端',
       BugOrIssue: 'bug',
-      LowOrMediumOrHigh: 'High',
+      LowOrMediumOrMajorOrCritical: 'High',
       Department: '研三',
       Urgent: true,
       StartDate: '2021-4-21',

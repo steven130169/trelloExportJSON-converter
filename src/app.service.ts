@@ -111,7 +111,7 @@ export type Sheet = {
   CardName: string;
   Department: string;
   Urgent: boolean;
-  LowOrMediumOrHigh: string;
+  LowOrMediumOrMajorOrCritical: string;
   BugOrIssue: string;
   DueDate: string;
   ListName: string;
@@ -190,7 +190,7 @@ export class AppService {
         CardId: '',
         CardName: '',
         FrontOrBack: '',
-        LowOrMediumOrHigh: '',
+        LowOrMediumOrMajorOrCritical: '',
         BugOrIssue: '',
         Department: '',
         Urgent: false,
@@ -245,9 +245,10 @@ export class AppService {
         if (
           label.id === '5ff6f4806542d4941900ccca' ||
           label.id === '5ff6f4806542d4941900ccc4' ||
-          label.id === '5ff6f4806542d4941900ccc5'
+          label.id === '5ff6f4806542d4941900ccc5' ||
+          label.id === '607fb9c802c92385ca7a4973'
         ) {
-          row.LowOrMediumOrHigh = label.name;
+          row.LowOrMediumOrMajorOrCritical = label.name;
         }
       }
       console.debug(`row is ${JSON.stringify(row)}`);
